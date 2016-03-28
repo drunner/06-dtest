@@ -76,6 +76,10 @@ function main {
          #--- unrecognised commands
 
          *)
+            # For the standard hooks we don't implement we're required to produce
+            # no output and set exit code 127 (E_NOTIMPL).
+            ! isHook ${COMMAND} || exit 127
+         
             showhelp
             die "drunner/dtest doesn't support the command ${CODE_S}${COMMAND}${CODE_E}"
             ;;
