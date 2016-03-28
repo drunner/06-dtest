@@ -1,7 +1,7 @@
-# dr-test
-Simple test container for developing [Docker Runner](https://github.com/j842/dr).
+# dtest
+Simple test container for developing [dServices](https://github.com/j842/dr).
 
-## Example usage with dr
+## Example usage
 
 ```
 drunner install drunner/dtest
