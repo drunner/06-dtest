@@ -7,4 +7,5 @@ before_install:
 
 script:
    - ddev build
-   - dtest test -d drunner/dtest
+   - ddev test
+   
