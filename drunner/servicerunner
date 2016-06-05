@@ -65,6 +65,7 @@ function main {
 
          selftest)
             # to implement
+	    save_environment "LOCAL_MODE" "true"
             ;;
 
          #--- custom commands

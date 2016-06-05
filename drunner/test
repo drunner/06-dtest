@@ -83,27 +83,32 @@ function testdrunner {
    local TEMPDIR=$(mktemp -d -p "$SERVICETEMPDIR")
    expectpass $? "$TEMPDIR"
 
+   FLAGS=""
+   if [ "$DEVELOPERMODE" = true ]; then
+      FLAGS="-d "
+   fi
+
    ( #subshell, so if we exit we still clean up
-      testcommand "drunner checkimage ${IMAGENAME}" || { failmsg "Not dRunner compatible. Aborting tests." ; exit 1 ;}
-      testcommand "drunner install ${IMAGENAME} ${SERVICE}"
+      testcommand "drunner ${FLAGS}checkimage ${IMAGENAME}" || { failmsg "Not dRunner compatible. Aborting tests." ; exit 1 ;}
+      testcommand "drunner ${FLAGS}install ${IMAGENAME} ${SERVICE}"
 
       # test uninstall process.
-      testcommand "drunner uninstall ${SERVICE}"
-      testcommand "drunner install ${IMAGENAME} ${SERVICE}"
-      testcommand "drunner uninstall ${SERVICE}"
-      testcommand "drunner recover ${SERVICE} ${IMAGENAME}"
+      testcommand "drunner ${FLAGS}uninstall ${SERVICE}"
+      testcommand "drunner ${FLAGS}install ${IMAGENAME} ${SERVICE}"
+      testcommand "drunner ${FLAGS}uninstall ${SERVICE}"
+      testcommand "drunner ${FLAGS}recover ${SERVICE} ${IMAGENAME}"
 
       # test update.
-      testcommand "drunner update ${SERVICE}"
+      testcommand "drunner ${FLAGS}update ${SERVICE}"
 
-      checkingmsg "drunner enter ${SERVICE} -c \"echo hi\""
-      local FAILDETAILS=$(drunner enter "${SERVICE}" -c "echo hi" 2>&1)
+      checkingmsg "drunner ${FLAGS}enter ${SERVICE} -c \"echo hi\""
+      local FAILDETAILS=$(drunner ${FLAGS}enter "${SERVICE}" -c "echo hi" 2>&1)
       expectpass $? "$FAILDETAILS"
 
       local PASS="password123"
-      testcommand "PASS=${PASS} drunner backup ${SERVICE} ${TEMPDIR}/backup"
-      testcommand "PASS=${PASS} drunner restore ${TEMPDIR}/backup ${SERVICE}-clone"
-      testcommand "drunner update ${SERVICE}-clone"
+      testcommand "PASS=${PASS} drunner ${FLAGS}backup ${SERVICE} ${TEMPDIR}/backup"
+      testcommand "PASS=${PASS} drunner ${FLAGS}restore ${TEMPDIR}/backup ${SERVICE}-clone"
+      testcommand "drunner ${FLAGS}update ${SERVICE}-clone"
 
       testservice "${SERVICE}"
       testservice "${SERVICE}-clone"
@@ -113,8 +118,8 @@ function testdrunner {
    )
    RVAL=$?
 
-   testcommand "drunner obliterate ${SERVICE}-clone"
-   testcommand "drunner obliterate ${SERVICE}"
+   testcommand "drunner ${FLAGS}obliterate ${SERVICE}-clone"
+   testcommand "drunner ${FLAGS}obliterate ${SERVICE}"
    testcommand "rm -rf ${TEMPDIR}"
 
    echo " ">&2
