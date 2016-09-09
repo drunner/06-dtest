@@ -11,10 +11,13 @@ function drunner_setup()
    addvolume("drunner-${SERVICENAME}-vol3",true,false)
 
    -- addcontainer(NAME)
-   addcontainer("drunner/baseimage-alpine")
+   addcontainer("drunner/baseimage-alpine",true)
 
    -- addproxy(VIRTUAL_HOST,HTTP_PORT,HTTPS_PORT)
    addproxy("${VIRTUAL_HOST}","${PORT}","")
+
+   -- addcron(offsetmin, repeatmin, function)
+   addcron(0,5,"whee")
 end
 
 function checkport(expectedPort)
@@ -25,6 +28,11 @@ function checkport(expectedPort)
       end
       print("Expected port "..expectedPort.." but config says "..p)
       return 1
+end
+
+function whee()
+   print("whee!")
+   return 0
 end
 
 function help()
