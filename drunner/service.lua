@@ -13,9 +13,6 @@ function drunner_setup()
    -- addcontainer(NAME)
    addcontainer("drunner/baseimage-alpine",true)
 
-   -- addproxy(VIRTUAL_HOST,HTTP_PORT,HTTPS_PORT)
-   addproxy("${VIRTUAL_HOST}","${PORT}","")
-
    -- addcron(offsetmin, repeatmin, function)
    addcron(0,5,"whee")
 end
